@@ -1,7 +1,7 @@
 # Base image for running the app
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 #FROM mcr.microsoft.com/dotnet/aspnet:8.0-windowsservercore-ltsc2019 AS base
-USER ContainerUser															   
+#USER ContainerUser															   
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 443
