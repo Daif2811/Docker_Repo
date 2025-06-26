@@ -1,7 +1,10 @@
+using Docker_Test.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//           options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+           options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddControllersWithViews();
@@ -33,8 +36,8 @@ var scopeFactory = app.Services.CreateScope();
 var services = scopeFactory.ServiceProvider;
 try
 {
-    //var dbContext = services.GetRequiredService<ApplicationDbContext>();
-    //dbContext.Database.Migrate();
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
 }
 catch (Exception ex)
 {
