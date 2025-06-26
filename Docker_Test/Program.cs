@@ -1,6 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//           options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 builder.Services.AddControllersWithViews();
 
 //builder.WebHost.UseUrls("http://0.0.0.0:8080", "https://0.0.0.0:8081");
@@ -11,7 +14,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -25,5 +27,20 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+var scopeFactory = app.Services.CreateScope();
+var services = scopeFactory.ServiceProvider;
+try
+{
+    //var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    //dbContext.Database.Migrate();
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred while seeding data or Migrating database.");
+}
+
 
 app.Run();

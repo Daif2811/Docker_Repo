@@ -7,12 +7,13 @@ EXPOSE 8080
 EXPOSE 443
 
 # Build stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build 
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 #FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2019 AS build
 WORKDIR /src
 
 # Copy project file and restore dependencies
-COPY ["*.sln", "./"]
+#COPY ["*.sln", "./"]
+COPY ["Docker_Test.sln", "./"]
 COPY ["Docker_Test/Docker_Test.csproj", "Docker_Test/"]	
 RUN dotnet restore "Docker_Test.sln"
 
