@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Docker_Test.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Docker_Test.Controllers
@@ -23,10 +24,26 @@ namespace Docker_Test.Controllers
             return View();
         }
 
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // Capture exception details from the context
+            var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            var errorViewModel = new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ExceptionMessage = exceptionDetails?.Error.Message,
+                StackTrace = exceptionDetails?.Error.StackTrace
+            };
+
+            return View(errorViewModel);
         }
+
     }
 }

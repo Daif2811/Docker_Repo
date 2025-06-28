@@ -20,8 +20,7 @@ namespace Docker_Test.Controllers
 
         public IActionResult Create()
         {
-            var result = _context.Products.ToList();
-            return View(result);
+            return View();
         }
 
         [HttpPost]
