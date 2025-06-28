@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//           options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+           options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddControllers();
 
 builder.Services.AddControllersWithViews();
 
@@ -13,6 +14,10 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -36,8 +41,8 @@ var scopeFactory = app.Services.CreateScope();
 var services = scopeFactory.ServiceProvider;
 try
 {
-    //var dbContext = services.GetRequiredService<ApplicationDbContext>();
-    //dbContext.Database.Migrate();
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
 }
 catch (Exception ex)
 {
